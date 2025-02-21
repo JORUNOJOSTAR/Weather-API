@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  weather-api-nginx:
+    container_name: "weather-api-nginx"
+    build:
+      context: ./docker/nginx
+    depends_on:
+      - weather-api-app
+    ports:
+      - 80:80
+    volumes:
+      - ./:/src
+
+  weather-api-app:
+    container_name: "weather-api-app"
+    build:
+      context: ./docker/php
+    depends_on:
+      - weather-api-redis
+    volumes:
+      - ./:/src
+      - /src/node_modules
+      - /src/vendor
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+
+  weather-api-redis:
+    container_name: "weather-api-redis"
+    image: 'redis:alpine'
+    ports:
+        - '6379:6379'
+    volumes:
+        - './docker/redis:/data'
+    healthcheck:
+        test:
+            - CMD
+            - redis-cli
+            - ping
+        retries: 3
+        timeout: 5s
