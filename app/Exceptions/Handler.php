@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Http\Client\RequestException as ClientRequestException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -45,6 +47,18 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function(RequestException $e, $request){
+            return response()->json([
+                "message"=>"Sorry. Something going wrong. Try again later."
+            ],500);
+        });
+
+        $this->renderable(function(ClientRequestException $e,$request){
+            return response()->json([
+                "message"=>"Internal Error."
+            ],500);
         });
     }
 }

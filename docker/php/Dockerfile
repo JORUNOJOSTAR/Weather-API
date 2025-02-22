@@ -33,4 +33,4 @@ ADD . /src/storage
 RUN chown -R www-data:www-data /src/storage
 RUN mkdir -p /src/database && touch /src/database/database.sqlite
 
-ENTRYPOINT [ "bash", "-c", "composer install; npm install; exec php-fpm" ]
+ENTRYPOINT [ "bash", "-c", "composer install; npm install;php artisan key:generate; exec php-fpm" ]
