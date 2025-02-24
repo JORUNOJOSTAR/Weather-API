@@ -9,6 +9,7 @@ In this application
 - Request query are hashed and use as a key for checking data in redis cache
 - If data not found, app will fetch data from weather api and result will be save on cache
 - Cache data expiration is set as 12 hours
+- Request is limited to 60 attempts per minute.
 
 ## Tech Stack && Installation
 - [Docker](https://docs.docker.com/engine/install/)
